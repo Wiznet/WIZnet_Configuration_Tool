@@ -24,6 +24,9 @@ more details [kr](https://wizwiki.net/wiki/doku.php?id=products:wiz550s2e:wiz550
 ### WIZ550SR
 
 # Revision History
+### v1.10
+- Added for MQTT field
+	- Support for WIZ550S2E v1.2.0 or later.
 ### v1.03
 - Supports WIZ550SR
 ### v1.02

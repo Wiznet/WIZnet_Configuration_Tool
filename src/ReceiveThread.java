@@ -52,7 +52,6 @@ public class ReceiveThread extends Thread {
 						System.arraycopy(recv, 6, discovery_reply.mac_address, 0, 6);
 
 						callback.receivedPacket(header.op_code[0], discovery_reply);
-						break;
 					}
 					else if(header.op_code[0] == wiznet_header.GET_INFO) {
 						WIZnet_Header.Get_Info_Reply get_info_reply = new WIZnet_Header.Get_Info_Reply();
@@ -64,12 +63,10 @@ public class ReceiveThread extends Thread {
 						get_info_reply.system_info = data;
 
 						callback.receivedPacket(wiznet_header.GET_INFO, get_info_reply);
-						break;
 					}
 					else if(header.op_code[0] == wiznet_header.SET_INFO) {
 						WIZnet_Header.Set_Info_Reply set_info_reply = new WIZnet_Header.Set_Info_Reply();
 						callback.receivedPacket(wiznet_header.SET_INFO, set_info_reply);
-						break;
 					}
 					else if(header.op_code[0] == wiznet_header.FIRMWARE_UPLOAD_INIT) {
 						WIZnet_Header.Firmware_Upload_Init_Reply firmware_upload_init_reply = new WIZnet_Header.Firmware_Upload_Init_Reply();
@@ -78,20 +75,16 @@ public class ReceiveThread extends Thread {
 					else if(header.op_code[0] == wiznet_header.FIRMWARE_UPLOAD_DONE) {
 						WIZnet_Header.Firmware_Upload_Done_Reply firmware_upload_done_reply = new WIZnet_Header.Firmware_Upload_Done_Reply();
 						callback.receivedPacket(wiznet_header.FIRMWARE_UPLOAD_DONE, firmware_upload_done_reply);
-						break;
 					}
 					else if(header.op_code[0] == wiznet_header.REMOTE_RESET) {
 						WIZnet_Header.Reset_Reply reset_reply = new WIZnet_Header.Reset_Reply();
 						callback.receivedPacket(wiznet_header.REMOTE_RESET, reset_reply);
-						break;
 					}
 					else if(header.op_code[0] == wiznet_header.FACTORY_RESET) {
 						WIZnet_Header.Factory_Reset_Reply facroty_reset_reply = new WIZnet_Header.Factory_Reset_Reply();
 						callback.receivedPacket(wiznet_header.FACTORY_RESET, facroty_reset_reply);
-						break;
 					}
 					else {
-						break;
 					}
 				}
 			}

@@ -11,7 +11,7 @@ public class WIZ550S2E_Config {
 	 * 
 	 */
 
-	private final int length = 162;
+	private final int length = 162+70;
 
 	class __network_info_common {
 		byte[] mac = new byte[6];
@@ -57,6 +57,11 @@ public class WIZ550S2E_Config {
 
 		byte serial_command;			// Serial Command Mode 사용 여부
 		byte[] serial_trigger = new byte[3];	// Serial Command Mode 진입을 위한 Trigger 코드
+		
+		byte[] mqtt_user	= new byte[10];
+		byte[] mqtt_pw		= new byte[10];
+		byte[] mqtt_publish_topic	= new byte[25];
+		byte[] mqtt_subscribe_topic	= new byte[25];
 	}
 
 	short packet_size;
@@ -151,6 +156,15 @@ public class WIZ550S2E_Config {
 		options.serial_command = data[index++];
 		for(i=0; i<3; i++)
 			options.serial_trigger[i] = data[index++];
+		for(i=0; i<10; i++)
+			options.mqtt_user[i] = data[index++];
+		for(i=0; i<10; i++)
+			options.mqtt_pw[i] = data[index++];
+		for(i=0; i<25; i++)
+			options.mqtt_publish_topic[i] = data[index++];
+		for(i=0; i<25; i++)
+			options.mqtt_subscribe_topic[i] = data[index++];
+		
 	}
 
 	public byte[] getData() {
@@ -237,6 +251,30 @@ public class WIZ550S2E_Config {
 		data[index++] = options.serial_command;
 		for(i=0; i<3; i++)
 			data[index++] = options.serial_trigger[i];
+		for(i=0; i<10; i++) {
+			if(i >= options.mqtt_user.length)
+				data[index++] = '\0';
+			else
+				data[index++] = options.mqtt_user[i];
+		}
+		for(i=0; i<10; i++) {
+			if(i >= options.mqtt_pw.length)
+				data[index++] = '\0';
+			else
+				data[index++] = options.mqtt_pw[i];
+		}
+		for(i=0; i<25; i++) {
+			if(i >= options.mqtt_publish_topic.length)
+				data[index++] = '\0';
+			else
+				data[index++] = options.mqtt_publish_topic[i];
+		}
+		for(i=0; i<25; i++) {
+			if(i >= options.mqtt_subscribe_topic.length)
+				data[index++] = '\0';
+			else
+				data[index++] = options.mqtt_subscribe_topic[i];
+		}
 
 		return data;
 	}

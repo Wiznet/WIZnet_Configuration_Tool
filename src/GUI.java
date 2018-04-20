@@ -90,6 +90,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 	public final JRadioButton rdbtnTcpServer = new JRadioButton("TCP Server");
 	public final JRadioButton rdbtnTcpMixed = new JRadioButton("TCP Mixed");
 	public final JRadioButton rdbtnUdp = new JRadioButton("UDP");
+	public final JRadioButton rdbtnMqtt = new JRadioButton("MQTT");
+	
+	/* Modify 2016.3.18 by Ricky */
 	public JComboBox<Object> cmbBaudRate = new JComboBox<Object>();
 	public final JComboBox<Object> cmbDataBits = new JComboBox<Object>();
 	public final JComboBox<Object> cmbParity = new JComboBox<Object>();
@@ -130,6 +133,15 @@ public class GUI extends JFrame implements ReceiveCallback {
 	public JPasswordField pwdSettingPassword;
 	public JButton btnSearch = new JButton("Search");
 	private JScrollPane scrollPane;
+	public JPanel panel_Mqtt;
+	public JLabel lblUser;
+	public JTextField txtMqttUser;
+	public JLabel lblPassword;
+	public JTextField txtMqttPassword;
+	public JLabel lblPublishTopic;
+	public JTextField txtMqttPublishTopic;
+	public JLabel lblSubscribeTopic;
+	public JTextField txtMqttSubscribeTopic;
 
 	private class treeSelectionTimer extends TimerTask {
 		public void run() {
@@ -289,9 +301,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 	 */
 	public GUI() {
 		setResizable(false);
-		setTitle("WIZnet Configuration Tool Version 1.03");
+		setTitle("WIZnet Configuration Tool Version 1.10");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(860, 710);
+		setSize(860, 850);
 		Dimension frameSize = this.getSize();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
@@ -301,7 +313,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{210, 210, 210, 210, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{535, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
@@ -451,7 +463,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 		contentPane.add(panel_Network, gbc_panel_Network);
 		GridBagLayout gbl_panel_Network = new GridBagLayout();
 		gbl_panel_Network.columnWidths = new int[]{0, 0};
-		gbl_panel_Network.rowHeights = new int[]{111, 0, 0, 0, 0};
+		gbl_panel_Network.rowHeights = new int[]{111, 0, 195, 0, 0};
 		gbl_panel_Network.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_Network.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_Network.setLayout(gbl_panel_Network);
@@ -568,6 +580,8 @@ public class GUI extends JFrame implements ReceiveCallback {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		btngrpWorkingMode.add(rdbtnTcpClient);
@@ -581,6 +595,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 		
 		btngrpWorkingMode.add(rdbtnUdp);
 		panel_WorkingMode.add(rdbtnUdp, "2, 8");
+		
+		btngrpWorkingMode.add(rdbtnMqtt);
+		panel_WorkingMode.add(rdbtnMqtt, "2, 10");
 		
 		panel_Timer = new JPanel();
 		panel_Timer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -866,9 +883,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 		contentPane.add(panel_Options, gbc_panel_Options);
 		GridBagLayout gbl_panel_Options = new GridBagLayout();
 		gbl_panel_Options.columnWidths = new int[]{0, 0};
-		gbl_panel_Options.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_Options.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_Options.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_Options.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_Options.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_Options.setLayout(gbl_panel_Options);
 		
 		panel_ModuleName = new JPanel();
@@ -964,6 +981,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 		panel_Dns = new JPanel();
 		panel_Dns.setBorder(new TitledBorder(null, "DNS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_Dns = new GridBagConstraints();
+		gbc_panel_Dns.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_Dns.fill = GridBagConstraints.BOTH;
 		gbc_panel_Dns.gridx = 0;
 		gbc_panel_Dns.gridy = 3;
@@ -1012,6 +1030,66 @@ public class GUI extends JFrame implements ReceiveCallback {
 		txtDomain.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_Dns.add(txtDomain, "2, 10, fill, default");
 		txtDomain.setColumns(10);
+		
+		panel_Mqtt = new JPanel();
+		panel_Mqtt.setBorder(new TitledBorder(null, "MQTT", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_panel_Mqtt = new GridBagConstraints();
+		gbc_panel_Mqtt.fill = GridBagConstraints.BOTH;
+		gbc_panel_Mqtt.gridx = 0;
+		gbc_panel_Mqtt.gridy = 4;
+		panel_Options.add(panel_Mqtt, gbc_panel_Mqtt);
+		panel_Mqtt.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		lblUser = new JLabel("User");
+		panel_Mqtt.add(lblUser, "2, 2");
+		
+		txtMqttUser = new JTextField();
+		txtMqttUser.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_Mqtt.add(txtMqttUser, "2, 4, fill, default");
+		txtMqttUser.setColumns(10);
+		
+		lblPassword = new JLabel("Password");
+		panel_Mqtt.add(lblPassword, "2, 6");
+		
+		txtMqttPassword = new JTextField();
+		txtMqttPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_Mqtt.add(txtMqttPassword, "2, 8, fill, default");
+		txtMqttPassword.setColumns(10);
+		
+		lblPublishTopic = new JLabel("Publish Topic");
+		panel_Mqtt.add(lblPublishTopic, "2, 10");
+		
+		txtMqttPublishTopic = new JTextField();
+		txtMqttPublishTopic.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_Mqtt.add(txtMqttPublishTopic, "2, 12, fill, default");
+		txtMqttPublishTopic.setColumns(10);
+		
+		lblSubscribeTopic = new JLabel("Subscribe Topic");
+		panel_Mqtt.add(lblSubscribeTopic, "2, 14");
+		
+		txtMqttSubscribeTopic = new JTextField();
+		txtMqttSubscribeTopic.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_Mqtt.add(txtMqttSubscribeTopic, "2, 16, fill, default");
+		txtMqttSubscribeTopic.setColumns(10);
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();

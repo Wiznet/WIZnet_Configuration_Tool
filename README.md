@@ -24,5 +24,7 @@ more details [kr](https://wizwiki.net/wiki/doku.php?id=products:wiz550s2e:wiz550
 ### WIZ550SR
 
 # Revision History
+### v1.03
+- Supports WIZ550SR
 ### v1.02
 - First release : Nov. 2015

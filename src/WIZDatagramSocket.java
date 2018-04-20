@@ -128,6 +128,12 @@ public class WIZDatagramSocket {
 			wiz550web_config.setData(packet);
 			mac = wiz550web_config.network_info_common.mac;
 		}
+		/* WIZ550SR */
+		else if(packet[2] == 0x02 && packet[3] == 0x00 && packet[4] == 0x00) {
+			WIZ550SR_Config wiz550sr_config = new WIZ550SR_Config();
+			wiz550sr_config.setData(packet);
+			mac = wiz550sr_config.network_info_common.mac;
+		}
 
 		byte[] sendMsg = wiznet_header.set_info(mac, packet, set_pw);
 		if(host == "255.255.255.255") {
@@ -168,6 +174,15 @@ public class WIZDatagramSocket {
 					(0xFF&wiz550web_config.network_info_common.local_ip[0]), (0xFF&wiz550web_config.network_info_common.local_ip[1]),
 					(0xFF&wiz550web_config.network_info_common.local_ip[2]), (0xFF&wiz550web_config.network_info_common.local_ip[3]));
 			mac = wiz550web_config.network_info_common.mac;
+		}
+		/* WIZ550SR */
+		else if(packet[2] == 0x02 && packet[3] == 0x00 && packet[4] == 0x00) {
+			WIZ550SR_Config wiz550sr_config = new WIZ550SR_Config();
+			wiz550sr_config.setData(packet);
+			ip = String.format("%d.%d.%d.%d",
+					(0xFF&wiz550sr_config.network_info_common.local_ip[0]), (0xFF&wiz550sr_config.network_info_common.local_ip[1]),
+					(0xFF&wiz550sr_config.network_info_common.local_ip[2]), (0xFF&wiz550sr_config.network_info_common.local_ip[3]));
+			mac = wiz550sr_config.network_info_common.mac;
 		}
 
 		try {

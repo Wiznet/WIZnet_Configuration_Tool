@@ -90,11 +90,11 @@ public class GUI extends JFrame implements ReceiveCallback {
 	public final JRadioButton rdbtnTcpServer = new JRadioButton("TCP Server");
 	public final JRadioButton rdbtnTcpMixed = new JRadioButton("TCP Mixed");
 	public final JRadioButton rdbtnUdp = new JRadioButton("UDP");
-	public final JComboBox<Object> cmbBaudRate = new JComboBox<Object>();
+	public JComboBox<Object> cmbBaudRate = new JComboBox<Object>();
 	public final JComboBox<Object> cmbDataBits = new JComboBox<Object>();
 	public final JComboBox<Object> cmbParity = new JComboBox<Object>();
 	public final JComboBox<Object> cmbStopBits = new JComboBox<Object>();
-	public final JComboBox<Object> cmbFlow = new JComboBox<Object>();
+	public JComboBox<Object> cmbFlow = new JComboBox<Object>();
 	public final JCheckBox chckbxEnableAtCommand = new JCheckBox("Enable");
 	public JTextField txtTrigger1;
 	public JTextField txtTrigger2;
@@ -178,6 +178,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 		else if(packet.product_code[0] == 0x01 && packet.product_code[1] == 0x02 && packet.product_code[2] == 0x00) {
 			module_type = "WIZ550WEB";
 		}
+		else if(packet.product_code[0] == 0x02 && packet.product_code[1] == 0x00 && packet.product_code[2] == 0x00) {
+			module_type = "WIZ550SR";
+		}
 		else {
 			return;
 		}
@@ -252,6 +255,12 @@ public class GUI extends JFrame implements ReceiveCallback {
 				wiz550web_config.setData(get_info_reply.system_info);
 				PanelManager.updateToPanel(this, wiz550web_config);
 			}
+			/* WIZ550SR */
+			else if(get_info_reply.system_info[2] == 0x02 && get_info_reply.system_info[3] == 0x00 && get_info_reply.system_info[4] == 0x00) {
+				WIZ550SR_Config wiz550sr_config = new WIZ550SR_Config();
+				wiz550sr_config.setData(get_info_reply.system_info);
+				PanelManager.updateToPanel(this, wiz550sr_config);
+			}
 		}
 		else if(op == wiznet_header.SET_INFO) {
 			JFrame frame = new JFrame();
@@ -280,7 +289,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 	 */
 	public GUI() {
 		setResizable(false);
-		setTitle("WIZnet Configuration Tool Version 1.02");
+		setTitle("WIZnet Configuration Tool Version 1.03");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(860, 710);
 		Dimension frameSize = this.getSize();
@@ -317,6 +326,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_ListOfModules.add(scrollPane, "2, 2, fill, fill");
+				tree.setVisibleRowCount(254);
 				scrollPane.setViewportView(tree);
 		
 				tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -774,20 +784,20 @@ public class GUI extends JFrame implements ReceiveCallback {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblTime = new JLabel("Time");
-		panel_PackingConditions.add(lblTime, "2, 2, right, default");
+		JLabel lblTime = new JLabel("Time(ms)");
+		panel_PackingConditions.add(lblTime, "2, 2, left, default");
 		
 		txtPackingTime = new JTextField();
 		txtPackingTime.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_PackingConditions.add(txtPackingTime, "4, 2, 5, 1, fill, default");
+		panel_PackingConditions.add(txtPackingTime, "3, 2, 6, 1, fill, default");
 		txtPackingTime.setColumns(10);
 		
-		JLabel lblSize = new JLabel("Size");
-		panel_PackingConditions.add(lblSize, "2, 4, right, default");
+		JLabel lblSize = new JLabel("Size(byte)");
+		panel_PackingConditions.add(lblSize, "2, 4, left, default");
 		
 		txtPackingSize = new JTextField();
 		txtPackingSize.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_PackingConditions.add(txtPackingSize, "4, 4, 5, 1, fill, default");
+		panel_PackingConditions.add(txtPackingSize, "3, 4, 6, 1, fill, default");
 		txtPackingSize.setColumns(10);
 		
 		panel_Char = new JPanel();
@@ -1153,6 +1163,13 @@ public class GUI extends JFrame implements ReceiveCallback {
 								socket.set_info("255.255.255.255", wiz550web_config.getData(), password.trim());
 							}
 						}
+						/* WIZ550SR */
+						else if(discovery_reply.product_code[0] == 0x02 && discovery_reply.product_code[1] == 0x00 && discovery_reply.product_code[2] == 0x00) {
+							WIZ550SR_Config wiz550sr_config = new WIZ550SR_Config();
+							if(PanelManager.updateFromPanel(gui, selectedMac, wiz550sr_config)) {
+								socket.set_info("255.255.255.255", wiz550sr_config.getData(), password.trim());
+							}
+						}
 
 						break;
 					}
@@ -1212,6 +1229,13 @@ public class GUI extends JFrame implements ReceiveCallback {
 							WIZ550WEB_Config wiz550web_config = new WIZ550WEB_Config();
 							if(PanelManager.updateFromPanel(gui, selectedMac, wiz550web_config)) {
 								socket.firmware_upload(wiz550web_config.getData(), serverIp, Short.parseShort(dialog.txtServerPort.getText(), 10), dialog.txtFileName.getText().trim(), password.trim());
+							}
+						}
+						/* WIZ550SR */
+						else if(discovery_reply.product_code[0] == 0x02 && discovery_reply.product_code[1] == 0x00 && discovery_reply.product_code[2] == 0x00) {
+							WIZ550SR_Config wiz550sr_config = new WIZ550SR_Config();
+							if(PanelManager.updateFromPanel(gui, selectedMac, wiz550sr_config)) {
+								socket.firmware_upload(wiz550sr_config.getData(), serverIp, Short.parseShort(dialog.txtServerPort.getText(), 10), dialog.txtFileName.getText().trim(), password.trim());
 							}
 						}
 						break;

@@ -481,6 +481,9 @@ public class PanelManager {
 		case 3:
 			gui.rdbtnUdp.setSelected(true);
 			break;
+		case 4:
+			gui.rdbtnMqtt.setSelected(true);
+			break;
 		default:
 			break;
 		}
@@ -535,6 +538,14 @@ public class PanelManager {
 		gui.txtDnsServerIp.setText(str);
 		str = new String(packet.options.dns_domain_name);
 		gui.txtDomain.setText(str.trim());
+		str = new String(packet.options.mqtt_user);
+		gui.txtMqttUser.setText(str.trim());
+		str = new String(packet.options.mqtt_pw);
+		gui.txtMqttPassword.setText(str.trim());
+		str = new String(packet.options.mqtt_publish_topic);
+		gui.txtMqttPublishTopic.setText(str.trim());
+		str = new String(packet.options.mqtt_subscribe_topic);
+		gui.txtMqttSubscribeTopic.setText(str.trim());
 	}
 
 	public static boolean updateFromPanel(GUI gui, String selectedMac, WIZ550S2E_Config packet) {
@@ -635,6 +646,9 @@ public class PanelManager {
 		else if(gui.rdbtnUdp.isSelected()) {
 			packet.network_info[0].working_mode = 3;
 		}
+		else if(gui.rdbtnMqtt.isSelected()) {
+			packet.network_info[0].working_mode = 4;
+		}
 		else {
 			packet.network_info[0].working_mode = 0;
 		}
@@ -681,6 +695,11 @@ public class PanelManager {
 		packet.options.dns_server_ip[2] = (byte) (0x00FF&Short.parseShort(str_array[2], 10));
 		packet.options.dns_server_ip[3] = (byte) (0x00FF&Short.parseShort(str_array[3], 10));
 		packet.options.dns_domain_name = gui.txtDomain.getText().trim().getBytes();
+		
+		packet.options.mqtt_user = gui.txtMqttUser.getText().trim().getBytes();
+		packet.options.mqtt_pw = gui.txtMqttPassword.getText().trim().getBytes();
+		packet.options.mqtt_publish_topic = gui.txtMqttPublishTopic.getText().trim().getBytes();
+		packet.options.mqtt_subscribe_topic = gui.txtMqttSubscribeTopic.getText().trim().getBytes();
 
 		return true;
 	}

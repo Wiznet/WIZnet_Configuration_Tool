@@ -29,6 +29,10 @@ more details [kr](https://wizwiki.net/wiki/doku.php?id=products:wiz550s2e:wiz550
   <img width="100%" src="https://wizwiki.net/wiki/lib/exe/fetch.php?media=products:wiz550s2e:new_wireframe_3.png" />
 </p>
 
+This is the MQTT version repository, see the following link for the Modbus version repository.
+
+https://github.com/Wiznet/WIZnet_Configuration_Tool-Modbus
+
 ### v1.10
 - Added for MQTT field
 	- Support for WIZ550S2E v1.2.0 or later.

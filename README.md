@@ -33,6 +33,10 @@ This is the MQTT version repository, see the following link for the Modbus versi
 
 https://github.com/Wiznet/WIZnet_Configuration_Tool-Modbus
 
+### v1.30
+- Added for Modbus field
+	- Support for WIZ550S2E v1.4.0 or later.
+
 ### v1.10
 - Added for MQTT field
 	- Support for WIZ550S2E v1.2.0 or later.

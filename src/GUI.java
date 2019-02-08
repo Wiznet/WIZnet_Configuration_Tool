@@ -143,12 +143,17 @@ public class GUI extends JFrame implements ReceiveCallback {
 	public JLabel lblSubscribeTopic;
 	public JTextField txtMqttSubscribeTopic;
 
+	private JPanel panel_Modbus;
+	public final JCheckBox chckbxUseModbus = new JCheckBox("Use Modbus");
+	public final JComboBox<Object> cmbModbusMode = new JComboBox<Object>();
+	private JLabel lblModbusMode;
+
 	private class treeSelectionTimer extends TimerTask {
 		public void run() {
 			if(treeIndex != 0) {
-				// °¡Àå ÃÖ±Ù¿¡ Ãß°¡µÈ MAC ÁÖ¼Ò¸¦ ¼±ÅÃÇÏµµ·Ï ÇÑ´Ù.
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±Ù¿ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ MAC ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 				//tree.setSelectionRow(treeIndex);
-				// °¡Àå »ó´Ü¿¡ Ãß°¡µÈ MAC ÁÖ¼Ò¸¦ ¼±ÅÃÇÏµµ·Ï ÇÑ´Ù.
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ü¿ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ MAC ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 				tree.setSelectionRow(2);
 			}
 
@@ -170,9 +175,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 				packet.mac_address[2], packet.mac_address[3],
 				packet.mac_address[4], packet.mac_address[5]);
 
-		// Search Method°¡ Mac Address·Î ¼³Á¤µÈ °æ¿ì
+		// Search Methodï¿½ï¿½ Mac Addressï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		if(rdbtnMacAddress.isSelected() && txtMacAddress.getText().length() != 0) {
-			// Mac Address¸¦ ÀÔ·Â ¹Þ´Â ÅØ½ºÆ® ¹Ú½ºÀÇ ¹®ÀÚ¿­°ú ÇöÀç ¼ö½ÅµÈ ÆÐÅ¶ÀÇ MAC Address°¡ µ¿ÀÏÇÑÁö °Ë»ç
+			// Mac Addressï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Þ´ï¿½ ï¿½Ø½ï¿½Æ® ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Åµï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ MAC Addressï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
 			if(txtMacAddress.getText().trim().toUpperCase(Locale.ENGLISH).equals(mac_address.toUpperCase(Locale.ENGLISH)) == false)
 				return;
 		}
@@ -183,7 +188,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
 		DefaultMutableTreeNode child = null;
 
-		// ¸ðµâÀÇ Å¸ÀÔÀ» È®ÀÎÇÑ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½.
 		if(packet.product_code[0] == 0x00 && packet.product_code[1] == 0x00 && packet.product_code[2] == 0x00) {
 			module_type = "WIZ550S2E";
 		}
@@ -197,16 +202,16 @@ public class GUI extends JFrame implements ReceiveCallback {
 			return;
 		}
 
-		// ¸ðµâÀ» Å¸ÀÔº°·Î ±¸ºÐÇÏ±â À§ÇØ Æ®¸®¿¡ Ä«Å×°í¸®¸¦ ¸¸µç´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ôºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
 		treeIndex = root.getChildCount();
 		if(treeIndex == 0) {
-			// ÇöÀç Æ®¸®¿¡ ¾Æ¹«·± Ä«Å×°í¸®°¡ ¾ø´Â °æ¿ì
+			// ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Æ¹ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			child = new DefaultMutableTreeNode(module_type);
 			root.add(child);
 			treeIndex++;
 		}
 		else {
-			// ÇöÀç Æ®¸®¿¡ 1°³ ÀÌ»óÀÇ Ä«Å×°í¸®°¡ ÀÖ´Â °æ¿ì
+			// ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½Ì»ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
 			exist = false;
 			child = (DefaultMutableTreeNode)root.getFirstChild();
 
@@ -219,7 +224,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 				child = (DefaultMutableTreeNode) root.getChildAfter(child);
 			}
 
-			// ¸ðµâÀÇ Å¸ÀÔ°ú µ¿ÀÏÇÑ Ä«Å×°í¸®°¡ ¾ø´Â °æ¿ì
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ô°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			if(exist == false) {
 				child = new DefaultMutableTreeNode(module_type);
 				root.add(child);
@@ -227,23 +232,23 @@ public class GUI extends JFrame implements ReceiveCallback {
 			}
 		}
 
-		// À§¿¡¼­ ¼±ÅÃµÈ Ä«Å×°í¸®¿¡ ¼ö½ÅÇÑ ÆÐÅ¶ÀÇ MAC ÁÖ¼Ò¸¦ Ãß°¡ÇÑ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ MAC ï¿½Ö¼Ò¸ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½.
 		DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(mac_address);
 		child.add(leaf);
 		model.reload(root);
 
-		// ¸ðµç Ä«Å×°í¸®¸¦ È®ÀåÇÑ´Ù.
+		// ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½.
 		for (int j = 0; j < tree.getRowCount(); j++) {
 			tree.expandRow(j);
 			//tree.collapseRow(j);
 		}
 
-		// °¡Àå ÃÖ±Ù¿¡ Ãß°¡µÈ MAC ÁÖ¼Ò¸¦ ¼±ÅÃÇÏµµ·Ï ÇÑ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±Ù¿ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ MAC ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 		treeIndex += model.getIndexOfChild(child, leaf) + 1;
 		timer.schedule(new treeSelectionTimer(), 500);
 	}
 
-	// ReceiveThread°¡ ÆÐÅ¶À» ¼ö½ÅÇÏ¸é ÀÌ ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+	// ReceiveThreadï¿½ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ñ´ï¿½.
 	public void receivedPacket(byte op, Object packet) {
 		WIZnet_Header wiznet_header = new WIZnet_Header();
 
@@ -301,9 +306,9 @@ public class GUI extends JFrame implements ReceiveCallback {
 	 */
 	public GUI() {
 		setResizable(false);
-		setTitle("WIZnet Configuration Tool Version 1.10");
+		setTitle("WIZnet Configuration Tool Version 1.30");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(860, 850);
+		setSize(860, 950);
 		Dimension frameSize = this.getSize();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
@@ -1090,6 +1095,48 @@ public class GUI extends JFrame implements ReceiveCallback {
 		txtMqttSubscribeTopic.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_Mqtt.add(txtMqttSubscribeTopic, "2, 16, fill, default");
 		txtMqttSubscribeTopic.setColumns(10);
+		
+				panel_Modbus = new JPanel();
+		panel_Modbus.setBorder(new TitledBorder(null, "Modbus", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_panel_Modbus = new GridBagConstraints();
+		gbc_panel_Modbus.fill = GridBagConstraints.BOTH;
+		gbc_panel_Modbus.gridx = 0;
+		gbc_panel_Modbus.gridy = 5;
+		panel_Options.add(panel_Modbus, gbc_panel_Modbus);
+		panel_Modbus.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("max(30dlu;default)"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		panel_Modbus.add(chckbxUseModbus, "2, 2, 5, 1");
+		
+		chckbxUseModbus.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JCheckBox checkbox = (JCheckBox) e.getSource();
+
+				if(checkbox.isSelected()) {
+					cmbModbusMode.setEnabled(true);
+				}
+				else {
+					cmbModbusMode.setEnabled(false);
+				}
+			}
+		});
+		
+		lblModbusMode = new JLabel("Work as");
+		panel_Modbus.add(lblModbusMode, "2, 4, 3, 1, left, default");
+	
+		cmbModbusMode.setModel(new DefaultComboBoxModel<Object>(new String[] {"RTU", "ASCII"}));
+		panel_Modbus.add(cmbModbusMode, "6, 4, fill, default");
+
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();

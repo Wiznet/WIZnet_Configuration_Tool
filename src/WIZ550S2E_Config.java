@@ -22,7 +22,7 @@ public class WIZ550S2E_Config {
 
 	class __network_info {
 		byte working_mode;
-		byte state;	// ¼ÒÄÏÀÇ »óÅÂ TCPÀÇ °æ¿ì Not Connected, Connected, UDPÀÇ °æ¿ì UDP
+		byte state;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ TCPï¿½ï¿½ ï¿½ï¿½ï¿½ Not Connected, Connected, UDPï¿½ï¿½ ï¿½ï¿½ï¿½ UDP
 		byte[] remote_ip = new byte[4];
 		short local_port;
 		short remote_port;
@@ -34,11 +34,11 @@ public class WIZ550S2E_Config {
 		byte packing_size;		// 0~255
 		byte[] packing_delimiter = new byte[4];
 		byte packing_delimiter_length;	// 0~4
-		byte packing_data_appendix;	// 0~2(±¸ºÐÀÚ±îÁö Àü¼Û, ±¸ºÐÀÚ +1¹ÙÀÌÆ® ±îÁö Àü¼Û, ±¸ºÐÀÚ +2¹ÙÀÌÆ® ±îÁö Àü¼Û)
+		byte packing_data_appendix;	// 0~2(ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +1ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +2ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 	}
 
 	class __serial_info {
-		int baud_rate;	// °¢ Baud Rateº°·Î ÄÚµå ºÎ¿©?
+		int baud_rate;	// ï¿½ï¿½ Baud Rateï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½Î¿ï¿½?
 		byte data_bits;	// 7, 8, 9 and more?
 		byte parity;			// None, odd, even
 		byte stop_bits;	// 1, 1.5, 2
@@ -55,22 +55,26 @@ public class WIZ550S2E_Config {
 		byte[] dns_server_ip = new byte[4];
 		byte[] dns_domain_name = new byte[50];
 
-		byte serial_command;			// Serial Command Mode »ç¿ë ¿©ºÎ
-		byte[] serial_trigger = new byte[3];	// Serial Command Mode ÁøÀÔÀ» À§ÇÑ Trigger ÄÚµå
+		byte serial_command;			// Serial Command Mode ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		byte[] serial_trigger = new byte[3];	// Serial Command Mode ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Trigger ï¿½Úµï¿½
 		
 		byte[] mqtt_user	= new byte[10];
 		byte[] mqtt_pw		= new byte[10];
 		byte[] mqtt_publish_topic	= new byte[25];
 		byte[] mqtt_subscribe_topic	= new byte[25];
+		
+		byte modbus_use;
+		byte modbus_mode;
 	}
 
 	short packet_size;
-	byte[] module_type = new byte[3]; // ¸ðµâÀÇ Á¾·ùº°·Î ÄÚµå¸¦ ºÎ¿©ÇÏ°í ÀÌ¸¦ »ç¿ëÇÑ´Ù.
+	byte[] module_type = new byte[3]; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµå¸¦ ï¿½Î¿ï¿½ï¿½Ï°ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	byte[] module_name = new byte[25];
-	byte[] fw_ver = new byte[3];			// 10Áø¼ö. Major Version . Minor Version . Maintenance Version ¹öÀüÀ¸·Î ³ª´¸
+	byte[] fw_ver = new byte[3];			// 10ï¿½ï¿½ï¿½ï¿½. Major Version . Minor Version . Maintenance Version ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
 	__network_info_common network_info_common = null;
-	__network_info[] network_info = new __network_info[1];	// ¿©·¯°³ ¼ÒÄÏÀ» »ç¿ëÇÒ °æ¿ì
-	__serial_info[] serial_info = new __serial_info[1];	// ¿©·¯°³ ½Ã¸®¾óÀ» »ç¿ëÇÒ °æ¿ì
+	__network_info[] network_info = new __network_info[1];	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+	__serial_info[] serial_info = new __serial_info[1];	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	__options options;
 
 	public WIZ550S2E_Config() {
@@ -156,15 +160,23 @@ public class WIZ550S2E_Config {
 		options.serial_command = data[index++];
 		for(i=0; i<3; i++)
 			options.serial_trigger[i] = data[index++];
-		for(i=0; i<10; i++)
-			options.mqtt_user[i] = data[index++];
-		for(i=0; i<10; i++)
-			options.mqtt_pw[i] = data[index++];
-		for(i=0; i<25; i++)
-			options.mqtt_publish_topic[i] = data[index++];
-		for(i=0; i<25; i++)
-			options.mqtt_subscribe_topic[i] = data[index++];
-		
+
+		if((fw_ver[1] % 2) != 0)	//1.3.0
+		{
+			for(i=0; i<10; i++)
+				options.mqtt_user[i] = data[index++];
+			for(i=0; i<10; i++)
+				options.mqtt_pw[i] = data[index++];
+			for(i=0; i<25; i++)
+				options.mqtt_publish_topic[i] = data[index++];
+			for(i=0; i<25; i++)
+				options.mqtt_subscribe_topic[i] = data[index++];
+		}
+		else
+		{
+			options.modbus_use = data[index++];
+			options.modbus_mode = data[index++];
+		}
 	}
 
 	public byte[] getData() {
@@ -214,7 +226,6 @@ public class WIZ550S2E_Config {
 			data[index++] = network_info[0].packing_delimiter[i];
 		data[index++] = network_info[0].packing_delimiter_length;
 		data[index++] = network_info[0].packing_data_appendix;
-
 		data[index++] = (byte) serial_info[0].baud_rate;
 		data[index++] = (byte) (serial_info[0].baud_rate >> 8);
 		data[index++] = (byte) (serial_info[0].baud_rate >> 16);
@@ -251,31 +262,39 @@ public class WIZ550S2E_Config {
 		data[index++] = options.serial_command;
 		for(i=0; i<3; i++)
 			data[index++] = options.serial_trigger[i];
-		for(i=0; i<10; i++) {
-			if(i >= options.mqtt_user.length)
-				data[index++] = '\0';
-			else
-				data[index++] = options.mqtt_user[i];
-		}
-		for(i=0; i<10; i++) {
-			if(i >= options.mqtt_pw.length)
-				data[index++] = '\0';
-			else
-				data[index++] = options.mqtt_pw[i];
-		}
-		for(i=0; i<25; i++) {
-			if(i >= options.mqtt_publish_topic.length)
-				data[index++] = '\0';
-			else
-				data[index++] = options.mqtt_publish_topic[i];
-		}
-		for(i=0; i<25; i++) {
-			if(i >= options.mqtt_subscribe_topic.length)
-				data[index++] = '\0';
-			else
-				data[index++] = options.mqtt_subscribe_topic[i];
-		}
 
+		if((fw_ver[1] % 2) != 0)	//1.3.0
+		{
+			for(i=0; i<10; i++) {
+				if(i >= options.mqtt_user.length)
+					data[index++] = '\0';
+				else
+					data[index++] = options.mqtt_user[i];
+			}
+			for(i=0; i<10; i++) {
+				if(i >= options.mqtt_pw.length)
+					data[index++] = '\0';
+				else
+					data[index++] = options.mqtt_pw[i];
+			}
+			for(i=0; i<25; i++) {
+				if(i >= options.mqtt_publish_topic.length)
+					data[index++] = '\0';
+				else
+					data[index++] = options.mqtt_publish_topic[i];
+			}
+			for(i=0; i<25; i++) {
+				if(i >= options.mqtt_subscribe_topic.length)
+					data[index++] = '\0';
+				else
+					data[index++] = options.mqtt_subscribe_topic[i];
+			}
+		}
+		else
+		{
+			data[index++] = options.modbus_use;
+			data[index++] = options.modbus_mode;
+		}
 		return data;
 	}
 }

@@ -538,14 +538,33 @@ public class PanelManager {
 		gui.txtDnsServerIp.setText(str);
 		str = new String(packet.options.dns_domain_name);
 		gui.txtDomain.setText(str.trim());
-		str = new String(packet.options.mqtt_user);
-		gui.txtMqttUser.setText(str.trim());
-		str = new String(packet.options.mqtt_pw);
-		gui.txtMqttPassword.setText(str.trim());
-		str = new String(packet.options.mqtt_publish_topic);
-		gui.txtMqttPublishTopic.setText(str.trim());
-		str = new String(packet.options.mqtt_subscribe_topic);
-		gui.txtMqttSubscribeTopic.setText(str.trim());
+
+		if ((packet.fw_ver[1] % 2) != 0) //1.3.0
+		{
+			str = new String(packet.options.mqtt_user);
+			gui.txtMqttUser.setText(str.trim());
+			str = new String(packet.options.mqtt_pw);
+			gui.txtMqttPassword.setText(str.trim());
+			str = new String(packet.options.mqtt_publish_topic);
+			gui.txtMqttPublishTopic.setText(str.trim());
+			str = new String(packet.options.mqtt_subscribe_topic);
+			gui.txtMqttSubscribeTopic.setText(str.trim());
+		}
+		else
+		{
+			switch((0xFF&packet.options.modbus_use)) {
+			case 0:
+				gui.chckbxUseModbus.setSelected(false);
+				break;
+			case 1:
+				gui.chckbxUseModbus.setSelected(true);
+				break;
+			default:
+				gui.chckbxUseModbus.setSelected(false);
+				break;
+			}
+			gui.cmbModbusMode.setSelectedIndex((0xFF&packet.options.modbus_mode));
+		}
 	}
 
 	public static boolean updateFromPanel(GUI gui, String selectedMac, WIZ550S2E_Config packet) {
@@ -566,6 +585,11 @@ public class PanelManager {
 		packet.network_info_common.mac[5] = (byte) (0x00FF&Short.parseShort(str_array[5], 16));
 		
 		packet.module_name = gui.txtModuleName.getText().trim().getBytes();
+
+		str_array = gui.txtFirmwareVersion.getText().split("\\.");	//1.3.0
+		packet.fw_ver[0] = (byte) (0x00FF&Short.parseShort(str_array[0], 10));
+		packet.fw_ver[1] = (byte) (0x00FF&Short.parseShort(str_array[1], 10));
+		packet.fw_ver[2] = (byte) (0x00FF&Short.parseShort(str_array[2], 10));
 
 		if(!valid.IpValid(gui.txtIp.getText().trim())) {
 			JFrame frame = new JFrame();
@@ -695,11 +719,24 @@ public class PanelManager {
 		packet.options.dns_server_ip[2] = (byte) (0x00FF&Short.parseShort(str_array[2], 10));
 		packet.options.dns_server_ip[3] = (byte) (0x00FF&Short.parseShort(str_array[3], 10));
 		packet.options.dns_domain_name = gui.txtDomain.getText().trim().getBytes();
-		
-		packet.options.mqtt_user = gui.txtMqttUser.getText().trim().getBytes();
-		packet.options.mqtt_pw = gui.txtMqttPassword.getText().trim().getBytes();
-		packet.options.mqtt_publish_topic = gui.txtMqttPublishTopic.getText().trim().getBytes();
-		packet.options.mqtt_subscribe_topic = gui.txtMqttSubscribeTopic.getText().trim().getBytes();
+
+		if ((packet.fw_ver[1] % 2) != 0)	//1.3.0
+		{
+			packet.options.mqtt_user = gui.txtMqttUser.getText().trim().getBytes();
+			packet.options.mqtt_pw = gui.txtMqttPassword.getText().trim().getBytes();
+			packet.options.mqtt_publish_topic = gui.txtMqttPublishTopic.getText().trim().getBytes();
+			packet.options.mqtt_subscribe_topic = gui.txtMqttSubscribeTopic.getText().trim().getBytes();
+		}
+		else
+		{
+			if(gui.chckbxUseModbus.isSelected()) {
+				packet.options.modbus_use = 1;
+			}
+			else {
+				packet.options.modbus_use = 0;
+			}
+			packet.options.modbus_mode = (byte) (0x00FF&gui.cmbModbusMode.getSelectedIndex());
+		}
 
 		return true;
 	}

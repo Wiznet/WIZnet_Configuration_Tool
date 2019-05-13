@@ -33,6 +33,9 @@ This is the MQTT version repository, see the following link for the Modbus versi
 
 https://github.com/Wiznet/WIZnet_Configuration_Tool-Modbus
 
+### v1.31
+- Fixed F/W Uploading function
+
 ### v1.30
 - Added for Modbus field
 	- Support for WIZ550S2E v1.4.0 or later.

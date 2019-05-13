@@ -306,7 +306,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 	 */
 	public GUI() {
 		setResizable(false);
-		setTitle("WIZnet Configuration Tool Version 1.30");
+		setTitle("WIZnet Configuration Tool Version 1.31");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(860, 950);
 		Dimension frameSize = this.getSize();

@@ -550,7 +550,7 @@ public class PanelManager {
 			str = new String(packet.options.mqtt_subscribe_topic);
 			gui.txtMqttSubscribeTopic.setText(str.trim());
 		}
-		else
+		else 
 		{
 			switch((0xFF&packet.options.modbus_use)) {
 			case 0:
@@ -586,10 +586,12 @@ public class PanelManager {
 		
 		packet.module_name = gui.txtModuleName.getText().trim().getBytes();
 
+
 		str_array = gui.txtFirmwareVersion.getText().split("\\.");	//1.3.0
-		packet.fw_ver[0] = (byte) (0x00FF&Short.parseShort(str_array[0], 10));
+		//packet.fw_ver[0] = (byte) (0x00FF&Short.parseShort(str_array[0], 10)); //1.3.1
 		packet.fw_ver[1] = (byte) (0x00FF&Short.parseShort(str_array[1], 10));
 		packet.fw_ver[2] = (byte) (0x00FF&Short.parseShort(str_array[2], 10));
+
 
 		if(!valid.IpValid(gui.txtIp.getText().trim())) {
 			JFrame frame = new JFrame();

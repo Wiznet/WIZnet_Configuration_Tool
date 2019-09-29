@@ -29,7 +29,7 @@ more details [kr](https://wizwiki.net/wiki/doku.php?id=products:wiz550s2e:wiz550
   <img width="100%" src="https://wizwiki.net/wiki/lib/exe/fetch.php?media=products:wiz550s2e:new_wireframe_3.png" />
 </p>
 
-This is the MQTT version repository, see the following link for the Modbus version repository.
+Both MQTT and Modbus versions are compatible with Configuration Tool versions 1.3.0 and later.
 
 https://github.com/Wiznet/WIZnet_Configuration_Tool-Modbus
 

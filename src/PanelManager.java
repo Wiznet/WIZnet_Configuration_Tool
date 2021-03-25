@@ -120,6 +120,7 @@ public class PanelManager {
 			//gui.lblParity.setEnabled(true);
 			gui.cmbParity.setEnabled(true);
 			//gui.lblStopBits.setEnabled(true);
+			gui.cmbStopBits.setModel(new DefaultComboBoxModel<Object>(new String[] {"1", "2"}));
 			gui.cmbStopBits.setEnabled(true);
 			//gui.lblFlow.setEnabled(true);
 			gui.cmbFlow.setModel(new DefaultComboBoxModel<Object>(new String[] {"None", "RTS/CTS", "RS422", "RS485"}));
@@ -204,6 +205,7 @@ public class PanelManager {
 			//gui.lblParity.setEnabled(false);
 			gui.cmbParity.setEnabled(true);
 			//gui.lblStopBits.setEnabled(false);
+			gui.cmbStopBits.setModel(new DefaultComboBoxModel<Object>(new String[] {"1", "2"}));
 			gui.cmbStopBits.setEnabled(true);
 			//gui.lblFlow.setEnabled(false);
 			gui.cmbFlow.setModel(new DefaultComboBoxModel<Object>(new String[] {"None", "RTS/CTS", "RS422", "RS485"}));
@@ -291,6 +293,7 @@ public class PanelManager {
 			//gui.lblParity.setEnabled(true);
 			gui.cmbParity.setEnabled(true);
 			//gui.lblStopBits.setEnabled(true);
+			gui.cmbStopBits.setModel(new DefaultComboBoxModel<Object>(new String[] {"1", "2"}));
 			gui.cmbStopBits.setEnabled(true);
 			//gui.lblFlow.setEnabled(true);
 			
@@ -375,6 +378,7 @@ public class PanelManager {
 			//gui.lblParity.setEnabled(true);
 			gui.cmbParity.setEnabled(true);
 			//gui.lblStopBits.setEnabled(true);
+			gui.cmbStopBits.setModel(new DefaultComboBoxModel<Object>(new String[] {"1", "2"}));
 			gui.cmbStopBits.setEnabled(true);
 			//gui.lblFlow.setEnabled(true);
 			gui.cmbFlow.setEnabled(true);
@@ -493,7 +497,11 @@ public class PanelManager {
 		str = String.format("%d", (0xFF&packet.serial_info[0].data_bits));
 		gui.cmbDataBits.setSelectedItem(str);
 		gui.cmbParity.setSelectedIndex((0xFF&packet.serial_info[0].parity));
-		gui.cmbStopBits.setSelectedItem((0xFF&packet.serial_info[0].stop_bits));
+
+		str = String.format("%d", (0xFF&packet.serial_info[0].stop_bits));
+		gui.cmbStopBits.setSelectedItem(str);
+
+		//gui.cmbStopBits.setSelectedItem((0xFF&packet.serial_info[0].stop_bits));
 		gui.cmbFlow.setSelectedIndex((0xFF&packet.serial_info[0].flow_control));
 
 		if(packet.options.serial_command == 1)

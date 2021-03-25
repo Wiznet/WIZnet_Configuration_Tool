@@ -25,6 +25,8 @@ more details [kr](https://wizwiki.net/wiki/doku.php?id=products:wiz550s2e:wiz550
 
 # Revision History
 Both MQTT and Modbus versions are compatible with Configuration Tool versions 1.3.0 and later.
+### v1.32
+- Fixed Stop bits function
 
 ### v1.31
 - Fixed F/W Uploading function

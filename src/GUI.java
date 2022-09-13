@@ -306,7 +306,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 	 */
 	public GUI() {
 		setResizable(false);
-		setTitle("WIZnet Configuration Tool Version 1.32");
+		setTitle("WIZnet Configuration Tool Version 1.33");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(860, 950);
 		Dimension frameSize = this.getSize();
@@ -1096,7 +1096,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 		panel_Mqtt.add(txtMqttSubscribeTopic, "2, 16, fill, default");
 		txtMqttSubscribeTopic.setColumns(10);
 		
-				panel_Modbus = new JPanel();
+        panel_Modbus = new JPanel();
 		panel_Modbus.setBorder(new TitledBorder(null, "Modbus", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_Modbus = new GridBagConstraints();
 		gbc_panel_Modbus.fill = GridBagConstraints.BOTH;
@@ -1190,7 +1190,13 @@ public class GUI extends JFrame implements ReceiveCallback {
 		gbc_panel_Buttons.gridy = 2;
 		contentPane.add(panel_Buttons, gbc_panel_Buttons);
 		
-		btnSearch.addActionListener(new ActionListener() {
+        class btnSearchListener implements ActionListener
+		{
+			private GUI gui = null;
+			btnSearchListener(GUI gui) {
+				this.gui = gui;
+			}
+
 			public void actionPerformed(ActionEvent e) {
 				InputValidation valid = new InputValidation();
 				DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
@@ -1198,6 +1204,7 @@ public class GUI extends JFrame implements ReceiveCallback {
 				WIZnet_Header wiznet_header = new WIZnet_Header();
 
 				treeIndex = 0;
+                PanelManager.clearPanel(gui);
 				btnSearch.setEnabled(false);
 				timer.schedule(new treeSelectionTimer(), 1000);
 
@@ -1240,9 +1247,10 @@ public class GUI extends JFrame implements ReceiveCallback {
 					socket.discovery("255.255.255.255", wiznet_header.DISCOVERY_ALL);
 				}
 			}
-		});
-		panel_Buttons.add(btnSearch);
-		
+        }
+        btnSearch.addActionListener(new btnSearchListener(this));
+        panel_Buttons.add(btnSearch);
+
 		JButton btnSetting = new JButton("Setting");
 		class btnSettingListener implements ActionListener
 		{
